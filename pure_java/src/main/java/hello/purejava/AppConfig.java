@@ -8,23 +8,30 @@ import hello.purejava.member.MemberServiceImpl;
 import hello.purejava.member.MemoryMemberRepository;
 import hello.purejava.order.OrderService;
 import hello.purejava.order.OrderServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 // 외부에서 구현을 생성과 연결을 담당 (구성영역)
+@Configuration
 public class AppConfig {
 
+    @Bean
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository()); // Dependency Injection(DI)
     }
 
-    private MemberRepository memberRepository() { // 역할
+    @Bean
+    public MemberRepository memberRepository() { // 역할
         return new MemoryMemberRepository(); // 구현
     }
 
+    @Bean
     public OrderService orderService() {
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
-    private DiscountPolicy discountPolicy() {
+    @Bean
+    public DiscountPolicy discountPolicy() {
         return new FixDiscountPolicy();
     }
 }
