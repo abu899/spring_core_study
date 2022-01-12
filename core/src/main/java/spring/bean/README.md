@@ -1,0 +1,25 @@
+# Spring Container and Bean
+
+## Spring Container
+
+**ApplicationContext**를 스프링 컨테이너라고 하며 인터페이스 형태를 취하고 있다.
+우리가 MemberApp에서 사용해본 **AnnotationConfigApplicationContext**는 Annotation기반의 자바 설정 클래스로 만든 것이다.
+ApplicationContext에는 Annotation, XML 등의 설정 클래스등 여러가지가 존재한다.
+
+> 스프링 컨테이는 BeanFactory와 ApplicationContext로 구분할 수 있지만,
+> BeanFactory를 직접 사용하는 경우는 거의 없기에 일반적으로 ApplicationContext를 스프링 컨테이너라고 한다.
+
+## Spring container and bean
+
+1. Spring container 생성
+   - new AnnotationConfigApplicationContext(AppConfig.class)
+   - AnnotationContext를 만들어주고 구성 정보를 전달해 준다.
+2. Spring bean 등록
+   - Spring container 파라미터로 넘어온 class 정보를 이용해 내부의 bean을 등록한다.
+   - Bean의 이름은 메서드 이름과 같으며, 중복되지 않게 부여해야한다(물론 직접 이름을 부여할 수도 있음)
+3. Spring bean 의존관계 준비 및 설정
+   - 등록된 bean 정보를 토대로 의존관계를 주입(DI)한다.
+    
+> 스프링은 bean을 생성하고 의존관계를 주입하는 단계가 나눠져 있다.  
+> 우리가 만든 AppConfig의 경우 자바 코드로 호출하는 형태로 빈을 등록하기 위해
+> 함수를 실행하면, 엮여있는 다른 함수 또한 수행하게 되며 의존관계 또한 한번에 주입된다.

@@ -3,7 +3,6 @@ package hello.purejava;
 import hello.purejava.member.Grade;
 import hello.purejava.member.Member;
 import hello.purejava.member.MemberService;
-import hello.purejava.member.MemberServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
