@@ -1,6 +1,7 @@
 package spring.bean;
 
 import hello.purejava.AppConfig;
+import hello.purejava.discount.DiscountPolicy;
 import hello.purejava.member.MemberService;
 import hello.purejava.member.MemberServiceImpl;
 import org.assertj.core.api.Assertions;
@@ -38,8 +39,8 @@ public class ApplicationContextBasicFindTest {
 
     @Test
     @DisplayName("fail find bean by name")
-    void findBeanByNameFailed(){
+    void findBeanByNameFailed() {
         assertThrows(NoSuchBeanDefinitionException.class,
-                ()-> ac.getBean("memberServiceVIP", MemberService.class));
+                () -> ac.getBean("memberServiceVIP", MemberService.class));
     }
 }
