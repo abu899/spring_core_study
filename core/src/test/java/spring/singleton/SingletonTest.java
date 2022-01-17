@@ -1,8 +1,11 @@
 package spring.singleton;
 
 import hello.purejava.AppConfig;
+import hello.purejava.member.MemberRepository;
 import hello.purejava.member.MemberService;
-import org.assertj.core.api.Assertions;
+import hello.purejava.member.MemberServiceImpl;
+import hello.purejava.order.OrderServiceImpl;
+import hello.spring.singleton.SingletonService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -57,6 +60,33 @@ public class SingletonTest {
         System.out.println("memberService2 = " + memberService2);
 
         assertThat(memberService1).isSameAs(memberService2);
+    }
+
+    @Test
+    @DisplayName("AppConfig Configuration singleton test")
+    void configurationTest() {
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+        
+        MemberServiceImpl memberService = ac.getBean("memberService", MemberServiceImpl.class);
+        OrderServiceImpl orderService = ac.getBean("orderService", OrderServiceImpl.class);
+        MemberRepository memberRepository = ac.getBean("memberRepository", MemberRepository.class);
+
+        System.out.println("memberService.getMemberRepository() = " + memberService.getMemberRepository());
+        System.out.println("orderService.getMemberRepository() = " + orderService.getMemberRepository());
+        System.out.println("memberRepository = " + memberRepository);
+        
+        assertThat(memberService.getMemberRepository()).isEqualTo(orderService.getMemberRepository());
+        assertThat(memberService.getMemberRepository()).isEqualTo(memberRepository);
+        assertThat(orderService.getMemberRepository()).isEqualTo(memberRepository);
+    }
+
+    @Test
+    @DisplayName("Configuration deep dive")
+    void configurationDeepTest() {
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+        AppConfig bean = ac.getBean(AppConfig.class);
+
+        System.out.println("bean.getClass() = " + bean.getClass());
     }
 }
 

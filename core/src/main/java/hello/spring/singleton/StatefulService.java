@@ -1,4 +1,4 @@
-package spring.singleton;
+package hello.spring.singleton;
 
 public class StatefulService {
     private int price; // 상태를 저장하는 필드

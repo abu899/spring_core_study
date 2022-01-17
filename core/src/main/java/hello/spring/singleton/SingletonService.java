@@ -1,4 +1,4 @@
-package spring.singleton;
+package hello.spring.singleton;
 
 public class SingletonService {
 

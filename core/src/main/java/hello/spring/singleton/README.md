@@ -42,4 +42,26 @@
 - 공유 값 설정시 큰 문제가 발생한다!!
 - 스프링은 항상 무상태로 설계해야한다!!
 
+## @Configuration
+
+　@Configuration은 singleton을 위해 존재한다고 볼 수 있다. AppConfig.java를 보면
+ memberService와 orderService는 new MemoryMemberRepository를 각각 한번씩 호출한다.
+언뜻보기엔 singleton이 깨진듯이 보일 수 있다. 하지만 결과적으로 출력해보면 같은 인스턴스로 조회된다!  
+
+　어떻게 그럴까? 
+AppConfig를 context에 넣고 Bean으로 가져와보면 CGLIB이라는게 붙은 클래스가 등록되어 있는걸 볼 수 있다.(SingletonTest.java configurationDeep)
+CGLIB이 붙은 클래스는 내가 만든 클래스가 아닌 스프링이 AppConfig를 상속받아 만든 임의의 클래스로 CGLIB이라는 바이트코드 조작
+라이브러리를 사용해 만들었다는 것을 명시한 것이다.  
+　이 CGLIB이 붙은 임의의 클래스가 sigleton을 보장하도록 해준다.
+따라서 스프링 설정 정보에는 항상 **@Configuration**을 붙이자!
+
+> 참고로 위에서 AppConfig.class로 Bean을 가져오는 코드는 CGLIB은 AppConfig를 상속받은 자식 클래스이므로 조회 가능할 수 있다
+
+> 만약 @Configuration 없이 @Bean을 등록하게 되면 어떻게 될까?  
+> 　스프링 컨테이너에 정상적으로 동작하지만, CGLIB을 상속받아 만들지 않기에
+> Singleton을 보장받지 못한다.
+> 당연히 인스턴스가 같은지 확인해보면 다르게 나오며, 즉, 같은 객체가 여러번 인스턴스화된다.
+> 또한, 내부에 존재하는 객체 또한 singleton이 보장되지 못하여 모두 인스턴스화 되어 불필요한 인스턴스가 생성된다.
+
+
 

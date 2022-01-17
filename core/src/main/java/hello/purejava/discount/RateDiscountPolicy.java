@@ -2,9 +2,9 @@ package hello.purejava.discount;
 
 import hello.purejava.member.Grade;
 import hello.purejava.member.Member;
-import hello.purejava.member.MemberRepository;
-import hello.purejava.member.MemoryMemberRepository;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RateDiscountPolicy implements DiscountPolicy{
     private int discountPercent = 10;
     @Override
