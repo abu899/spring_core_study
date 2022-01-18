@@ -54,3 +54,34 @@ public class AppConfig(){
   - 스프링 데이터 접근 계층에서 사용
 - @Configuration
   - 설정 구성 정보에 사용
+
+## Filter
+
+- includeFilter
+  - ComponentScan의 대상을 추가로 지정
+- excludeFilter
+  - ComponentScan의 대상에서 제외
+
+### Filter Option
+
+- Annotation
+  - Default 값
+  - Annotation 인식
+- ASSIGNABLE_TYPE
+  - 지정한 타입과 그 자식타입을 인식
+- ASPECTJ
+  - AspectJ 패턴을 사용해서 인식
+- REGEX
+  - 정규 표현식
+- CUSTOM
+  - TypeFilter라는 인터페이스를 구현해서 처리
+
+## 중복 등록
+
+　만약 ComponentScan시, 이름이 같다면 어떻게 될까? 다음 두 가지 상황이 있을 수 있다.
+1. 자동 빈 등록 vs 자동 빈 등록
+   - BeanDefinitionStoreException 호출 
+2. 수동 빈 등록 vs 자동 빈 등록
+   - 된다(?)
+   - 이때는 수동으로 등록한 빈이 우선적으로 등록된다(오버라이딩)
+   - 하지만 최근 스프링부트에서는 이 경우에도 충돌 오류가 발생하도록 default가 됨
