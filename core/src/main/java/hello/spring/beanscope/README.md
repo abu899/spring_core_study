@@ -38,7 +38,7 @@
 > 싱글톤 빈은 같은 객체 공유, 프로토타입 빈은 서로 다른 빈을 사용한다  
 > 프로토타입 빈은 종료 메서드가 실행되지 않는다.
 
-## 프르토타입 스코프와 싱글톤 빈과 함께 사용시 의도하지 못한 문제가 발생한다
+### 프로토타입 스코프와 싱글톤 빈과 함께 사용시 의도하지 못한 문제가 발생한다
 
 　앞서 설명했듯 프로토타입 스코프에 빈을 요청하면 항상 새로운 객체 인스턴스를 리턴한다. 그러나 싱글톤 빈과 함께 사용하면
 우리가 의도한 대로 동작하지 않는 문제가 발생한다. 싱글톤 빈이 의존관계 주입을 통해 프로토타입 빈을 주입받아 사용하는 
@@ -59,3 +59,51 @@
 
 > 물론 여러 다른 빈에서 프로토타입 빈을 주입받으면, 주입받는 시점에는 새로운 프로토타입 빈이 생성되기 때문에
 > 다른 프로토타입 빈이 생성되는 건 맞지만, 여전히 사용시에는 새로 생성되지 않는다.
+
+### ObjectProvider, ObjectFactory
+
+　지정한 빈을 컨테이너에서 대신 찾아주는, Dependency Lookup(DL)을 제공하는 클래스!
+getObject가 호출되면, 그 때서야 스프링 빈에서 원하는 object를 리턴해주는 기능을 제공한다.
+ObjectProvider는 ObjectFactory를 상속받아 만들어진, 추가적인 편의기능을 제공하는 클래스이다.
+ObjectProvider는 내가 직접 의존관계를 찾는게 아닌, 스프링 컨테이너를 통해서 DL을 간단하게 도와주는 것이 핵심이다.
+
+> Dependency Lookup (DL)
+> 　의존관계를 외부에서 주입받는게 아닌, 필요한 의존관계를 직접 찾는 것.
+
+### JSR-330 Provider
+
+　ObjectProvider는 스프링에 의존적이지만, javax.inject.Provider는 자바 표준을 사용한다.
+provider.get()을 통해 빈을 찾아 올 수 있다. 심플하지만 기능이 제한적이다.
+
+> Provider는 언제 사용할까?  
+> retrieving multiple instances.  
+> lazy or optional retrieval of an instance.  
+> breaking circular dependencies.  
+> abstracting scope so you can look up an instance in a smaller scope from an instance in a containing scope.
+
+### Prototype Bean을 언제 사용할까?
+
+- 매번 사용할 때마다 의존관계 주입이 완료된 새로운 객체가 필요할 때
+- 하지만 일반적은 웹 어플리케이션 개발에서는 대부분 싱글톤 빈으로 해결된다.
+
+## Web Scope
+
+　웹 환경에서만 동작하고 해당 스코프의 종료시점까지 관리하게된다.  
+종류로는
+- request
+  - HTTP 요청 하나가 들어오고 나갈때 까지 유지되는 스코프. 즉 요청 하나마다 빈 인스턴스 생성.
+- session
+  - HTTP session과 동일한 생명 주기
+- application
+  - ServletContext와 동일한 생명 주기
+- websocket
+  - websocket과 동일한 생명 주기
+
+## Request Scope 예제
+　동시에 여러 HTTP 요청이 들어오면 어떤 요청이 남긴 로그인지 구별하기 어려울 수 있따. 이럴 때 사용하면
+ 좋은 것이 request scope! 스프링 컨테이너에 빈을 요청할 때 생성되고 끝나는 시점에 소멸된다.
+@PostConstruct, @PreDestroy 모두 사용할 수 있다.
+ 
+>　Request scope를 사용하지 않고 파라미터로 모든 정보를 서비스 계층으로 넘기는 것도 가능하다
+> 하지만 그렇게되면 파라미터가 많아질 뿐더러, 웹과 관련없는 서비스 계층까지 정보가 넘어가는 문제가 생긴다
+> 웹과 관련된 부분은 컨트롤러 까지만 사용하는 것을 권장하고 서비스는 웹기술에 종속되지 않게 분리하는 것이 좋다!
