@@ -1,5 +1,17 @@
 # Spring Core
 
+## 순서
+- 핵심 원리
+  - [객체 지향 설계](README.md)
+  - [Pure-java](core/src/main/java/hello/purejava/README.md)
+- 스프링 핵심 기능
+  - [Container, Bean](core/src/main/java/hello/spring/bean/README.md)
+  - [Singleton](core/src/main/java/hello/spring/singleton/README.md)
+  - [ComponentScan](core/src/main/java/hello/spring/componentscan/README.md)
+  - [Dependency Injection](core/src/main/java/hello/spring/autowired/README.md)
+  - [Bean Lifecycle](core/src/main/java/hello/spring/lifecycle/README.md)
+  - [Bean Scope](core/src/main/java/hello/spring/beanscope/README.md)
+
 ## Spring Framework
 
 - 핵심 기술 : 스프링 DI 컨테이너, AOP, 이벤트, 기타
